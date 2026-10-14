@@ -7,14 +7,18 @@
 // BLE SERVER
 #define SERVICE_UUID "54465d33-9f9f-4344-afff-e97aa90ff551"
 #define TEMP_CHARACTERISTIC_UUID "c1059e53-9b8f-42d4-ab20-255118af61d3"
+#define LED_CHARACTERISTIC_UUID "63d70fe8-2172-43b6-adfa-73b476378a19"
 
 NimBLECharacteristic *tempCharacteristic = nullptr;
+NimBLECharacteristic *ledCharacteristic = nullptr;
 
 // RTC
 RTC_DS3231 rtc;
 
 // temp
 float lastTemp = -999.0;
+
+constexpr int LED_PIN = 26;
 
 class ServerCallbacks : public NimBLEServerCallbacks {
     void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override {
@@ -35,6 +39,20 @@ class ServerCallbacks : public NimBLEServerCallbacks {
             Serial.println("[NimBLE] Security Pairing Successful.");
         } else {
             Serial.println("[NimBLE] Security Pairing Failed.");
+        }
+    }
+};
+
+class LedCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
+    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo){
+        std::string value = pCharacteristic->getValue();
+
+        if (!value.empty()){
+            if (value == "1"){
+                digitalWrite(LED_PIN, HIGH);
+            } else if (value == "0"){
+                digitalWrite(LED_PIN, LOW);
+            }
         }
     }
 };
@@ -71,6 +89,10 @@ void createTasks(){
 
 void setup() {
     Serial.begin(115200);
+
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
+
     Serial.println("Starting Server...");
 
     if (!rtc.begin()) {
@@ -97,6 +119,7 @@ void setup() {
     NimBLEServer *pServer = NimBLEDevice::createServer();
     pServer->setCallbacks(new ServerCallbacks());
 
+
     // SERVICES
     NimBLEService *pService = pServer->createService(SERVICE_UUID);
 
@@ -112,6 +135,18 @@ void setup() {
         NIMBLE_PROPERTY::NOTIFY
     );
     tempCharacteristic->setValue(std::string("0.0 C"));
+
+    ledCharacteristic = pService->createCharacteristic(
+        LED_CHARACTERISTIC_UUID,
+        NIMBLE_PROPERTY::READ | 
+        NIMBLE_PROPERTY::WRITE | 
+        NIMBLE_PROPERTY::READ_ENC | 
+        NIMBLE_PROPERTY::WRITE_ENC |
+        NIMBLE_PROPERTY::READ_AUTHEN | 
+        NIMBLE_PROPERTY::WRITE_AUTHEN
+    );
+
+    ledCharacteristic->setCallbacks(new LedCharacteristicCallbacks());
 
     // start advertising
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
