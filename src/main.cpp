@@ -44,7 +44,7 @@ class ServerCallbacks : public NimBLEServerCallbacks {
 };
 
 class LedCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
-    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo){
+    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override {
         std::string value = pCharacteristic->getValue();
 
         if (!value.empty()){
