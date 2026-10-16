@@ -1,0 +1,9 @@
+#pragma once
+
+#define MAIN_SERVICE_UUID "54465d33-9f9f-4344-afff-e97aa90ff551"
+#define TEMP_CHARACTERISTIC_UUID "c1059e53-9b8f-42d4-ab20-255118af61d3"
+#define LED_CHARACTERISTIC_UUID "63d70fe8-2172-43b6-adfa-73b476378a19"
+
+constexpr int LED_PIN = 26;
+
+#define DEVICE_NAME "sbs"
