@@ -53,7 +53,7 @@ void BleServer::init(const char *deviceName, const uint32_t passkey) {
     _server->setCallbacks(&serverCallbacks);
 }
 
-void BleServer::startAdvertising(const char *deviceName, std::vector<std::string> serviceUUIDS) {
+void BleServer::startAdvertising(const char *deviceName, const std::vector<std::string>& serviceUUIDS) {
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 
     for (const auto& service: serviceUUIDS) {
