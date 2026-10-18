@@ -4,7 +4,14 @@ It features an example service that has a characteristic that notifies the clien
 To be able to interact with the server you need to authenticate by entering the server's pin when asked.
 ## Usage
 
-Before flashing a device with this code, declare a "secrets.h" file in the include folder with the following structure
+Before flashing a device with this code, declare a "secrets.h" file in the include folder with the following structure and change the pin's number. 
+
+```
+#pragma once
+
+constexpr uint32_t SERVER_PIN = 000000;
+
+```
 
 ## Documentation
 
