@@ -56,10 +56,10 @@ void BleServer::init(const char *deviceName, const uint32_t passkey) {
 void BleServer::startAdvertising(const char *deviceName, const std::vector<std::string>& serviceUUIDS) {
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
 
-    for (const auto& service: serviceUUIDS) {
-        const auto res = pAdvertising->addServiceUUID(service.c_str());
+    for (const auto& serviceUUID: serviceUUIDS) {
+        const auto res = pAdvertising->addServiceUUID(serviceUUID.c_str());
         if (!res) {
-            auto msg = String("Failed adding service with UUID") + service.c_str();
+            auto msg = String("Failed adding service with UUID") + serviceUUID.c_str();
             Serial.println(msg);
         }
     }
