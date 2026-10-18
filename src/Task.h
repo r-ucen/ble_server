@@ -11,7 +11,7 @@ public:
     // Start and launch the task
     void start();
 
-    // Supposed to be overwritten in the base class with the task's logic
+    // Supposed to be overridden in the base class with the task's logic
     virtual void main() = 0;
 
     static void wrapper(void *pvParameters);
