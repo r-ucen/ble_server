@@ -1,4 +1,4 @@
-This project resembles a Bluetooth Low Energy server with authentication using the NumBLE library.
+This project resembles a Bluetooth Low Energy server with authentication using the NimBLE library.
 
 It features an example service that has a characteristic that notifies the client with temperature data from a DS3231 RTC chip as well as an example characteristic that allows the client to change the state of LED diodes (writing "1" - ON, writing "0" - OFF)
 To be able to interact with the server you need to authenticate by entering the server's pin when asked.
